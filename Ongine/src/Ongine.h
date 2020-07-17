@@ -12,3 +12,5 @@
 #include "Ongine/VertexArray.h"
 #include "Ongine/OpenGLVertexArray.h"
 #include "Ongine/OpenGLRenderer.h"
+#include "Ongine/Texture.h"
+#include "Ongine/OpenGLTexture.h"

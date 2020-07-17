@@ -8,14 +8,15 @@ public:
 	ON::OpenGLVertexBuffer VBO;
 	ON::OpenGLVertexArray VAO;
 	ON::OpenGLRenderer renderer;
+	ON::OpenGLTexture texture;
 
-	float vertices[12] = {
-		 0.5f,  0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f
+	float vertices[5 * 4] = {
+		 0.5f,  0.5f, 0.0f,   1.0f, 1.0f,
+		 0.5f, -0.5f, 0.0f,   1.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f,
+		-0.5f,  0.5f, 0.0f,   0.0f, 1.0f
 	};
-	unsigned int indices[6] = {
+	unsigned int indices[3 * 2] = {
 		0, 1, 3,
 		1, 2, 3
 	};
@@ -23,7 +24,8 @@ public:
 		shader.Create({ "res/sysshaders/vs.shader", "res/sysshaders/fs.shader" });
 
 		std::vector<ON::Attributte> dest;
-		dest.push_back({ 0, 3, 0, 3 });
+		dest.push_back({ 0, 3, 0, 5 });
+		dest.push_back({ 1, 2, (3 * sizeof(float)), 5 });
 
 		ON::BufferLayout layout = { dest };
 
@@ -39,6 +41,12 @@ public:
 
 		VBO.Unbind();
 		VAO.Unbind();
+
+		texture.Create({ "res/image.png" });
+		texture.Bind();
+
+		shader.Use();
+		shader.SetInt("diffuse", texture.GetRendererID());
 	}
 	virtual void OnUpdate(ON::Input& input) override {
 

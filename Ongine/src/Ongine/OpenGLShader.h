@@ -7,6 +7,9 @@ namespace ON {
 	public:
 		virtual void Create(ShaderSpecification spec) override;
 		virtual void Use() override;
+        inline void SetInt(const std::string& name, int value) {
+            glUniform1i(glGetUniformLocation(u_RendererID, name.c_str()), value);
+        }
 	private:
         void CheckCompilerErrors(unsigned int shader, std::string type) {
             int success;
