@@ -7,19 +7,20 @@ public:
 	ON::OpenGLIndexBuffer EBO;
 	ON::OpenGLVertexBuffer VBO;
 	ON::OpenGLVertexArray VAO;
+	ON::OpenGLRenderer renderer;
+
+	float vertices[12] = {
+		 0.5f,  0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
+	};
+	unsigned int indices[6] = {
+		0, 1, 3,
+		1, 2, 3
+	};
 	virtual void OnRun() override {
 		shader.Create({ "res/sysshaders/vs.shader", "res/sysshaders/fs.shader" });
-
-		float vertices[] = {
-			 0.5f,  0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			-0.5f, -0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
-		};
-		unsigned int indices[] = {
-			0, 1, 3,
-			1, 2, 3
-		};
 
 		std::vector<ON::Attributte> dest;
 		dest.push_back({ 0, 3, 0, 3 });
@@ -43,10 +44,7 @@ public:
 
 	}
 	virtual void OnRender() override {
-		shader.Use();
-		VAO.Bind();
-		EBO.Bind();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		renderer.DrawIndexed( { (sizeof(indices) / sizeof(indices[0])), EBO, VAO, shader });
 	}
 };
 

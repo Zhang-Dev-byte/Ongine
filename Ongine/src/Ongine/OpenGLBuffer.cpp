@@ -32,6 +32,11 @@ void ON::OpenGLVertexBuffer::Unbind()
 	glCall( glBindBuffer(GL_ARRAY_BUFFER, 0) );
 }
 
+unsigned int ON::OpenGLVertexBuffer::GetRenderID()
+{
+	return u_RendererID;
+}
+
 void ON::OpenGLIndexBuffer::Create(IndexBufferSpecification spec)
 {
 	indices = spec.indices;
@@ -54,4 +59,9 @@ void ON::OpenGLIndexBuffer::LinkAttributes()
 void ON::OpenGLIndexBuffer::Unbind()
 {
 	glCall( glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0) );
+}
+
+unsigned int ON::OpenGLIndexBuffer::GetRenderID()
+{
+	return u_RendererID;
 }

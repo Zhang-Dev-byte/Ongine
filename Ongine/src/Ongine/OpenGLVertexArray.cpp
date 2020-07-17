@@ -15,3 +15,8 @@ void ON::OpenGLVertexArray::Bind()
 {
 	glCall( glBindVertexArray(u_RendererID) );
 }
+
+unsigned int ON::OpenGLVertexArray::GetRenderID()
+{
+	return u_RendererID;
+}

@@ -13,6 +13,7 @@ namespace ON {
 		virtual void Bind() override;
 		virtual void LinkAttributes() override;
 		virtual void Unbind() override;
+		unsigned int GetRenderID();
 	private:
 		float* vertices;
 		uint32_t size;
@@ -26,6 +27,7 @@ namespace ON {
 		virtual void Bind() override;
 		virtual void LinkAttributes() override;
 		virtual void Unbind() override;
+		unsigned int GetRenderID();
 	private:
 		unsigned int* indices;
 		uint32_t size;
