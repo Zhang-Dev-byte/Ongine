@@ -3,6 +3,10 @@
 
 #include <memory>
 
+#ifndef NDEBUG
+#define ON_ENABLE_ASSERTS
+#define ON_DEBUG
+#endif // NDEBUG
 // Platform detection using predefined macros
 #ifdef _WIN32
 	/* Windows x64/x86 */
@@ -59,8 +63,8 @@
 #endif
 
 #ifdef ON_ENABLE_ASSERTS
-#define ON_ASSERT(x, ...) { if(!(x)) { ON_ERROR("Assertion Failed: {0}", __VA_ARGS__); ON_DEBUGBREAK(); } }
-#define ON_CORE_ASSERT(x, ...) { if(!(x)) { ON_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); ON_DEBUGBREAK(); } }
+#define ON_ASSERT(x, ...) { if(!(x)) { ON_ERROR("Assertion Failed: {0}"); ON_DEBUGBREAK(); } }
+#define ON_CORE_ASSERT(x, ...) { if(!(x)) { ON_CORE_ERROR("Assertion Failed: {0}"); ON_DEBUGBREAK(); } }
 #else
 #define ON_ASSERT(x, ...)
 #define ON_CORE_ASSERT(x, ...)
@@ -69,6 +73,9 @@
 #define BIT(x) (1 << x)
 
 #define ON_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+//TODO: 7/16/20 Add Buffers
+#define ON_OPENGL
 
 namespace ON {
 

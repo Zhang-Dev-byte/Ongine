@@ -32,8 +32,6 @@ int main(int argc, char* argv[]) {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-	app->OnRun();
-
 	GLFWwindow* window = glfwCreateWindow(1280, 720, "Ongine", NULL, NULL);
 	ON::Input input(window);
 	if (window == NULL)
@@ -51,17 +49,40 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	app->OnRun();
+
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init((char*)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+
 	while (!glfwWindowShouldClose(window))
 	{
 		app->OnUpdate(input);
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		ImGui_ImplOpenGL3_NewFrame();
+
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
 		app->OnRender();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+
+	ImGui::DestroyContext();
 
 	glfwTerminate();
 	delete app;
