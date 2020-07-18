@@ -1,6 +1,9 @@
 #pragma once
 #include "Shader.h"
 #include "Log.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace ON {
 	class OpenGLShader : public Shader {
@@ -9,6 +12,9 @@ namespace ON {
 		virtual void Use() override;
         inline void SetInt(const std::string& name, int value) {
             glUniform1i(glGetUniformLocation(u_RendererID, name.c_str()), value);
+        }
+        inline void SetMatrix4f(const std::string& name, glm::mat4& value) {
+            glUniformMatrix4fv(glGetUniformLocation(u_RendererID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
         }
 	private:
         void CheckCompilerErrors(unsigned int shader, std::string type) {

@@ -1,5 +1,4 @@
 #include <Ongine.h>
-#include <Ongine\GLErr.h>
 
 class Sandbox : public ON::Application {
 public:
@@ -11,15 +10,17 @@ public:
 	ON::OpenGLTexture texture;
 
 	float vertices[5 * 4] = {
-		 0.5f,  0.5f, 0.0f,   1.0f, 1.0f,
-		 0.5f, -0.5f, 0.0f,   1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f,
-		-0.5f,  0.5f, 0.0f,   0.0f, 1.0f
+		 0.15f,  0.15f, 0.0f,   1.0f, 1.0f,
+		 0.15f, -0.15f, 0.0f,   1.0f, 0.0f,
+		-0.15f, -0.15f, 0.0f,   0.0f, 0.0f,
+		-0.15f,  0.15f, 0.0f,   0.0f, 1.0f
 	};
 	unsigned int indices[3 * 2] = {
 		0, 1, 3,
 		1, 2, 3
 	};
+	//glm::mat4 model = glm::mat4(1.0f);
+	ON::Transform transform = ON::Transform();
 	virtual void OnRun() override {
 		shader.Create({ "res/sysshaders/vs.shader", "res/sysshaders/fs.shader" });
 
@@ -45,8 +46,10 @@ public:
 		texture.Create({ "res/image.png" });
 		texture.Bind();
 
+		ON_INFO(transform.GetScale().y);
 		shader.Use();
 		shader.SetInt("diffuse", texture.GetRendererID());
+		shader.SetMatrix4f("model", transform.GetModelMatrix());
 	}
 	virtual void OnUpdate(ON::Input& input) override {
 
