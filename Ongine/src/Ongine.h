@@ -15,3 +15,4 @@
 #include "Ongine/Texture.h"
 #include "Ongine/OpenGLTexture.h"
 #include "Ongine/Transform.h"
+#include "Ongine/Camera.h"

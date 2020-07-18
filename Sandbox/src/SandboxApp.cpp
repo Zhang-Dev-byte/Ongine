@@ -19,11 +19,11 @@ public:
 		0, 1, 3,
 		1, 2, 3
 	};
-	//glm::mat4 model = glm::mat4(1.0f);
+
 	ON::Transform transform = ON::Transform();
+	ON::Camera camera = ON::Camera(-1.6f, 1.6f, -0.9f, 0.9f);
 	virtual void OnRun() override {
 		shader.Create({ "res/sysshaders/vs.shader", "res/sysshaders/fs.shader" });
-
 		std::vector<ON::Attributte> dest;
 		dest.push_back({ 0, 3, 0, 5 });
 		dest.push_back({ 1, 2, (3 * sizeof(float)), 5 });
@@ -49,6 +49,8 @@ public:
 		shader.Use();
 		shader.SetInt("diffuse", texture.GetRendererID());
 		shader.SetMatrix4f("model", transform.GetModelMatrix());
+		shader.SetMatrix4f("view", camera.GetViewMatrix());
+		shader.SetMatrix4f("projection", camera.GetProjectionMatrix());
 	}
 	virtual void OnUpdate(ON::Input& input) override {
 
