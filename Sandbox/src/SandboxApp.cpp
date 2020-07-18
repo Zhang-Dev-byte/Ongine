@@ -46,7 +46,6 @@ public:
 		texture.Create({ "res/image.png" });
 		texture.Bind();
 
-		ON_INFO(transform.GetScale().y);
 		shader.Use();
 		shader.SetInt("diffuse", texture.GetRendererID());
 		shader.SetMatrix4f("model", transform.GetModelMatrix());
