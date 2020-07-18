@@ -18,8 +18,6 @@ namespace ON {
 int main(int argc, char* argv[]) {
 	ON::Log::Init();
 
-	auto app = ON::CreateApplication();
-
 	if (!glfwInit()) {
 		ON_CORE_CRITICAL("Failed to initalize GLFW");
 		return -1;
@@ -48,6 +46,9 @@ int main(int argc, char* argv[]) {
 		ON_CORE_CRITICAL("Failed to initalize Glad");
 		return -1;
 	}
+
+
+	auto app = ON::CreateApplication();
 
 	app->OnRun();
 
