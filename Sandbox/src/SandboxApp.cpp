@@ -2,61 +2,16 @@
 
 class Sandbox : public ON::Application {
 public:
-	ON::OpenGLShader shader;
-	ON::OpenGLIndexBuffer EBO;
-	ON::OpenGLVertexBuffer VBO;
-	ON::OpenGLVertexArray VAO;
-	ON::OpenGLRenderer renderer;
-	ON::OpenGLTexture texture;
-
-	float vertices[5 * 4] = {
-		 0.15f,  0.15f, 0.0f,   1.0f, 1.0f,
-		 0.15f, -0.15f, 0.0f,   1.0f, 0.0f,
-		-0.15f, -0.15f, 0.0f,   0.0f, 0.0f,
-		-0.15f,  0.15f, 0.0f,   0.0f, 1.0f
-	};
-	unsigned int indices[3 * 2] = {
-		0, 1, 3,
-		1, 2, 3
-	};
-
-	ON::Transform transform = ON::Transform();
 	ON::Camera camera = ON::Camera(-1.6f, 1.6f, -0.9f, 0.9f);
+	ON::Sprite sprite = ON::Sprite("res/image.png");
 	virtual void OnRun() override {
-		shader.Create({ "res/sysshaders/vs.shader", "res/sysshaders/fs.shader" });
-		std::vector<ON::Attributte> dest;
-		dest.push_back({ 0, 3, 0, 5 });
-		dest.push_back({ 1, 2, (3 * sizeof(float)), 5 });
 
-		ON::BufferLayout layout = { dest };
-
-		VAO.Create();
-		VBO.Create({vertices, sizeof(vertices)}, layout);
-		EBO.Create({ indices, sizeof(indices) });
-
-		VAO.Bind();
-
-		EBO.LinkAttributes();
-
-		VBO.LinkAttributes();
-
-		VBO.Unbind();
-		VAO.Unbind();
-
-		texture.Create({ "res/image.png" });
-		texture.Bind();
-
-		shader.Use();
-		shader.SetInt("diffuse", texture.GetRendererID());
-		shader.SetMatrix4f("model", transform.GetModelMatrix());
-		shader.SetMatrix4f("view", camera.GetViewMatrix());
-		shader.SetMatrix4f("projection", camera.GetProjectionMatrix());
 	}
 	virtual void OnUpdate(ON::Input& input) override {
 
 	}
 	virtual void OnRender() override {
-		renderer.DrawIndexed( { (sizeof(indices) / sizeof(indices[0])), EBO, VAO, shader });
+		sprite.Render(camera);
 	}
 };
 
