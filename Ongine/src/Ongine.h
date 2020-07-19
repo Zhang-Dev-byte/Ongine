@@ -16,5 +16,4 @@
 #include "Ongine/OpenGLTexture.h"
 #include "Ongine/Transform.h"
 #include "Ongine/Camera.h"
-#include "Ongine/Core.h"
 #include "Ongine/Sprite.h"

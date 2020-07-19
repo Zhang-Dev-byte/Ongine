@@ -22,7 +22,8 @@ namespace ON {
 	};
 	class OpenGLRenderer{
 	public:
-		void Draw(OpenGLDrawData data);
-		void DrawIndexed(OpenGLIndexedDrawData data);
+		OpenGLRenderer() = default;
+		static void Draw(OpenGLDrawData data);
+		static void DrawIndexed(OpenGLIndexedDrawData data);
 	};
 }

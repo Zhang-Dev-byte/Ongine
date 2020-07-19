@@ -5,7 +5,6 @@ public:
 	ON::Camera camera = ON::Camera(-1.6f, 1.6f, -0.9f, 0.9f);
 	ON::Sprite sprite = ON::Sprite("res/image.png");
 	virtual void OnRun() override {
-
 	}
 	virtual void OnUpdate(ON::Input& input) override {
 
