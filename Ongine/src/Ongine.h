@@ -17,4 +17,3 @@
 #include "Ongine/Transform.h"
 #include "Ongine/Camera.h"
 #include "Ongine/Sprite.h"
-#include "Ongine/AssetManager.h"
