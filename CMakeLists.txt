@@ -33,6 +33,7 @@ target_include_directories(Ongine PRIVATE deps/spdlog/include)
 target_include_directories(Ongine PRIVATE deps/stb)
 target_include_directories(Ongine PRIVATE deps/glm)
 target_include_directories(Ongine PRIVATE deps/imgui)
+target_include_directories(Ongine PRIVATE deps/entt)
 set_target_properties( Ongine
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
@@ -49,6 +50,7 @@ target_include_directories(Sandbox PRIVATE deps/stb)
 target_include_directories(Sandbox PRIVATE deps/glm)
 target_include_directories(Sandbox PRIVATE Ongine/src)
 target_include_directories(Sandbox PRIVATE deps/imgui)
+target_include_directories(Sandbox PRIVATE deps/entt)
 set_target_properties( Sandbox
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"

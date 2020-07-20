@@ -10,16 +10,14 @@
 #include "OpenGLRenderer.h"
 #include "Texture.h"
 #include "OpenGLTexture.h"
-#include "Transform.h"
 #include "Camera.h"
+#include "Transform.h"
 
 namespace ON {
 	class Sprite {
 	public:
 		Sprite(const std::string& path);
-		void Render(ON::Camera camera);
-	public:
-		ON::Transform transform = ON::Transform();
+		void Render(ON::Camera camera, ON::Transform transform);
 	private:
 		ON::OpenGLShader shader;
 		ON::OpenGLIndexBuffer EBO;

@@ -29,7 +29,7 @@ ON::Sprite::Sprite(const std::string& path)
 	shader.SetInt("diffuse", texture.GetRendererID());
 }
 
-void ON::Sprite::Render(ON::Camera camera)
+void ON::Sprite::Render(ON::Camera camera, ON::Transform transform)
 {
 	shader.Use();
 	shader.SetMatrix4f("model", transform.GetModelMatrix());
