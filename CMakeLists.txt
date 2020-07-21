@@ -19,6 +19,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(BUILD_TYPE Static CACHE STRING "The type of library to build") 
+
 # Library Linking
 target_link_libraries(imgui glfw glad)
 target_include_directories(imgui PRIVATE deps/glfw/include)
@@ -34,6 +36,12 @@ target_include_directories(Ongine PRIVATE deps/stb)
 target_include_directories(Ongine PRIVATE deps/glm)
 target_include_directories(Ongine PRIVATE deps/imgui)
 target_include_directories(Ongine PRIVATE deps/entt)
+if(BUILD_TYPE STREQUAL "Static")
+target_compile_definitions(Ongine PRIVATE ON_BUILD_LIB)
+elseif(BUILD_TYPE STREQUAL "Shared")
+target_compile_definitions(Ongine PRIVATE ON_BUILD_DLL)
+endif()
+
 set_target_properties( Ongine
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
@@ -51,6 +59,10 @@ target_include_directories(Sandbox PRIVATE deps/glm)
 target_include_directories(Sandbox PRIVATE Ongine/src)
 target_include_directories(Sandbox PRIVATE deps/imgui)
 target_include_directories(Sandbox PRIVATE deps/entt)
+if(BUILD_TYPE STREQUAL "Static")
+target_compile_definitions(Sandbox PRIVATE ON_BUILD_LIB)
+endif()
+
 set_target_properties( Sandbox
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"

@@ -7,7 +7,7 @@
 #include <glad/glad.h>
 namespace ON {
 
-	class OpenGLVertexBuffer : public VertexBuffer {
+	class ON_API OpenGLVertexBuffer : public VertexBuffer {
 	public:
 		virtual void Create(VertexBufferSpecification spec, BufferLayout layout) override;
 		virtual void Bind() override;
@@ -21,7 +21,7 @@ namespace ON {
 		BufferLayout layout;
 	};
 
-	class OpenGLIndexBuffer : public IndexBuffer {
+	class ON_API OpenGLIndexBuffer : public IndexBuffer {
 	public:
 		virtual void Create(IndexBufferSpecification spec) override;
 		virtual void Bind() override;

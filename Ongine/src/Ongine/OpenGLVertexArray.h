@@ -7,7 +7,7 @@
 #include <glad/glad.h>
 
 namespace ON {
-	class OpenGLVertexArray : public VertexArray{
+	class ON_API OpenGLVertexArray : public VertexArray{
 	public:
 		virtual void Create() override;
 		virtual void Unbind() override;

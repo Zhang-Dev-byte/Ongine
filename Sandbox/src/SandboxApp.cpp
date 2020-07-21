@@ -1,42 +1,32 @@
 #include <Ongine.h>
-#include <entt.hpp>
 
-class Sandbox : public ON::Application {
+class SandboxApp : public ON::Application {
 public:
 	ON::Camera camera = ON::Camera(-1.6f, 1.6f, -0.9f, 0.9f);
 	ON::Sprite sprite = ON::Sprite("res/image.png");
-	ON::Transform t = ON::Transform();
-	entt::registry r;
-	entt::entity e;
-	entt::entity c;
-	virtual void OnRun() override {
-		e = r.create();
-		r.emplace_or_replace<ON::Transform>(e, t);
-		r.emplace_or_replace<ON::Sprite>(e, sprite);
+	ON::Scene s;
+	ON::Entity e = ON::Entity({"Entity"}, s.GetRegistry());
+	ON::Entity c = ON::Entity({"Camera"}, s.GetRegistry());
 
-		c = r.create();
-		r.emplace_or_replace<ON::Camera>(c, camera);
-		//TODO: Add Scene System and ECS
+	virtual void OnRun() override {
+		e.AddComponent<ON::Sprite>(sprite, s.GetRegistry());
+		c.AddComponent<ON::Camera>(camera, s.GetRegistry());
+		c.RemoveComponent<ON::Transform>(s.GetRegistry());
+
+		s.SetCamera(&c);
 	}
 	virtual void OnUpdate(ON::Input& input) override {
-
+		
 	}
 	virtual void OnRender() override {
 		ImGui::Begin("Hello");
-		ImGui::DragFloat2("Position", glm::value_ptr(t.GetPosition()), 0.01f);
+		ImGui::DragFloat2("Position", glm::value_ptr(e.GetComponent<ON::Transform>(s.GetRegistry()).GetPosition()), 0.01f);
 		ImGui::End();
-		r.emplace_or_replace<ON::Transform>(e, t);
-		r.emplace_or_replace<ON::Sprite>(e, sprite);
 
-		r.emplace_or_replace<ON::Camera>(c, camera);
-
-		auto view = r.view<ON::Sprite, ON::Transform>();
-		for (auto entity : view) {
-			view.get<ON::Sprite>(entity).Render(r.get<ON::Camera>(c), view.get<ON::Transform>(entity));
-		}
+		s.Render();
 	}
 };
 
 ON::Application* ON::CreateApplication() {
-	return new Sandbox();
+	return new SandboxApp();
 }

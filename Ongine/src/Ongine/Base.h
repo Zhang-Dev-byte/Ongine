@@ -74,7 +74,16 @@
 
 #define ON_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
-//TODO: 7/16/20 Add Buffers
+#ifdef ON_BUILD_LIB
+#define ON_API
+#else
+#ifdef ON_BUILD_DLL 
+#define ON_API __declspec(dllexport)
+#else
+#define ON_API __declspec(dllimport)
+#endif // ON_BUILD_DLL 
+#endif
+
 #define ON_OPENGL
 
 namespace ON {

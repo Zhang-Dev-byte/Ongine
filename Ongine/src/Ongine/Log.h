@@ -7,7 +7,7 @@
 
 namespace ON {
 
-	class Log
+	class ON_API Log
 	{
 	public:
 		static void Init();

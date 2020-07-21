@@ -1,7 +1,8 @@
 #pragma once
+#include "Base.h"
 
 namespace ON {
-	class VertexArray {
+	class ON_API VertexArray {
 	public:
 		virtual void Create() = 0;
 		virtual void Unbind() = 0;

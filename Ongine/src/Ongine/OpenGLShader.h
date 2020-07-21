@@ -1,4 +1,5 @@
 #pragma once
+#include "Base.h"
 #include "Shader.h"
 #include "Log.h"
 #include <glm/glm.hpp>
@@ -6,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 namespace ON {
-	class OpenGLShader : public Shader {
+	class ON_API OpenGLShader : public Shader {
 	public:
 		virtual void Create(ShaderSpecification spec) override;
 		virtual void Use() override;

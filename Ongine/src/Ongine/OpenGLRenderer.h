@@ -9,18 +9,18 @@
 #include "OpenGLShader.h"
 
 namespace ON {
-	struct OpenGLDrawData {
+	struct ON_API OpenGLDrawData {
 		uint32_t vertices;
 		OpenGLVertexArray VAO;
 		OpenGLShader shader;
 	};
-	struct OpenGLIndexedDrawData {
+	struct ON_API OpenGLIndexedDrawData {
 		uint32_t indices;
 		OpenGLIndexBuffer EBO;
 		OpenGLVertexArray VAO;
 		OpenGLShader shader;
 	};
-	class OpenGLRenderer{
+	class ON_API OpenGLRenderer{
 	public:
 		OpenGLRenderer() = default;
 		static void Draw(OpenGLDrawData data);

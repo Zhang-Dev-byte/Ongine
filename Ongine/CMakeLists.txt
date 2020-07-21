@@ -24,4 +24,9 @@ file(GLOB ONGINE_SRC
 )
 
 ADD_MSVC_PRECOMPILED_HEADER("onpch.h" "src/Ongine/onpch.cpp" MySources)
-add_library(Ongine ${ONGINE_SRC})
+
+if(BUILD_TYPE STREQUAL "Static")
+add_library(Ongine STATIC ${ONGINE_SRC})
+elseif(BUILD_TYPE STREQUAL "Shared")
+add_library(Ongine SHARED ${ONGINE_SRC})
+endif()

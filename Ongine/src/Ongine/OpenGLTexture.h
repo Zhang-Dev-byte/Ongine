@@ -6,7 +6,7 @@
 #include <string>
 #include <glad/glad.h>
 namespace ON {
-	class OpenGLTexture : Texture{
+	class ON_API OpenGLTexture : Texture{
 	public:
 		virtual void Create(TextureSpecification spec) override;
 		virtual void Bind() override;

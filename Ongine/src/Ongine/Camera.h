@@ -1,11 +1,12 @@
 #pragma once
+#include "Base.h"
 #include "Log.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace ON {
-	class Camera {
+	class ON_API Camera {
 	public:
 		Camera(float left, float right, float bottom, float top);
 
@@ -36,11 +37,11 @@ namespace ON {
 			view = glm::inverse(transform);
 		}
 		
-		inline glm::mat4 GetViewMatrix() {
+		inline glm::mat4& GetViewMatrix() {
 			RecalculateViewMatrix();
 			return view;
 		}
-		inline glm::mat4 GetProjectionMatrix() {
+		inline glm::mat4& GetProjectionMatrix() {
 			return projection;
 		}
 	private:

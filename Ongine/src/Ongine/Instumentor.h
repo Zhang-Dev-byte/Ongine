@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Base.h"
 #include <algorithm>
 #include <chrono>
 #include <fstream>
@@ -14,7 +14,7 @@ namespace ON {
 
 	using FloatingPointMicroseconds = std::chrono::duration<double, std::micro>;
 
-	struct ProfileResult
+	struct ON_API ProfileResult
 	{
 		std::string Name;
 
@@ -23,12 +23,12 @@ namespace ON {
 		std::thread::id ThreadID;
 	};
 
-	struct InstrumentationSession
+	struct ON_API InstrumentationSession
 	{
 		std::string Name;
 	};
 
-	class Instrumentor
+	class ON_API Instrumentor
 	{
 	private:
 		std::mutex m_Mutex;
@@ -135,7 +135,7 @@ namespace ON {
 
 	};
 
-	class InstrumentationTimer
+	class ON_API InstrumentationTimer
 	{
 	public:
 		InstrumentationTimer(const char* name)

@@ -1,4 +1,5 @@
 #pragma once
+#include "Base.h"
 #include "onpch.h"
 #include "Application.h"
 #include "Log.h"
@@ -10,7 +11,7 @@
 #include <imgui_impl_opengl3.h>
 
 namespace ON {
-	class Input {
+	class ON_API Input {
 	public:
 		Input(GLFWwindow* window);
 		bool GetKey(int key);

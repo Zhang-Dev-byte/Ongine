@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Base.h"
 #include <glad/glad.h>
 
 #include <string>
@@ -8,11 +8,11 @@
 #include <iostream>
 
 namespace ON {
-	struct ShaderSpecification {
+	struct ON_API ShaderSpecification {
 		std::string vertexPath;
 		std::string fragmentPath;
 	};
-	class Shader {
+	class ON_API Shader {
 	public:
 		virtual void Create(ShaderSpecification spec) = 0;
 		virtual void Use() = 0;

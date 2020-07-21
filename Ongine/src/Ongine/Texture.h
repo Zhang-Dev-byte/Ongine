@@ -1,10 +1,11 @@
 #pragma once
+#include "Base.h"
 #include <string>
 namespace ON {
-	struct TextureSpecification {
+	struct ON_API TextureSpecification {
 		std::string path;
 	};
-	class Texture {
+	class ON_API Texture {
 	public:
 		virtual void Create(TextureSpecification spec) = 0;
 		virtual void Bind() = 0;

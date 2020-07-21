@@ -1,7 +1,8 @@
 #pragma once
+#include "Base.h"
 namespace ON {
-	class Input;
-	class Application {
+	class ON_API Input;
+	class ON_API Application {
 	public:
 		virtual void OnRun() = 0;
 		virtual void OnUpdate(ON::Input& input) = 0;

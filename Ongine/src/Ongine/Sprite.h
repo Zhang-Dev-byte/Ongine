@@ -14,7 +14,7 @@
 #include "Transform.h"
 
 namespace ON {
-	class Sprite {
+	class ON_API Sprite {
 	public:
 		Sprite(const std::string& path);
 		void Render(ON::Camera camera, ON::Transform transform);
