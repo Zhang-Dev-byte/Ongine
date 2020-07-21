@@ -1,4 +1,5 @@
 #include <Ongine.h>
+#include "SandboxLayer.h"
 
 class SandboxApp : public ON::Application {
 public:
@@ -29,4 +30,8 @@ public:
 
 ON::Application* ON::CreateApplication() {
 	return new SandboxApp();
+}
+
+void ON::OnLayersCreate() {
+	ON::LayerStack::PushLayer(new SandboxLayer());
 }

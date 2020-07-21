@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Log.h"
 #include "Instumentor.h"
+#include "LayerStack.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
@@ -10,13 +11,33 @@
 #include <imgui_impl_opengl3.h>
 
 namespace ON {
+	extern void OnLayersCreate();
 	extern Application* CreateApplication();
+	extern void RunLayers() {
+		for (auto i = LayerStack::begin(); i != LayerStack::end(); i++) {
+			auto l = *i;
+			l->OnRun();
+		}
+	}
+	extern void UpdateLayers(Input& input) {
+		for (auto i = LayerStack::begin(); i != LayerStack::end(); i++) {
+			auto l = *i;
+			l->OnUpdate(input);
+		}
+	}
+	extern void RenderLayers() {
+		for (auto i = LayerStack::begin(); i != LayerStack::end(); i++) {
+			auto l = *i;
+			l->OnRender();
+		}
+	}
 	extern void ResizeCallback(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	}
 }
 int main(int argc, char* argv[]) {
 	ON::Log::Init();
+	ON::OnLayersCreate();
 
 	if (!glfwInit()) {
 		ON_CORE_CRITICAL("Failed to initalize GLFW");
@@ -29,7 +50,6 @@ int main(int argc, char* argv[]) {
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
 	GLFWwindow* window = glfwCreateWindow(1280, 720, "Ongine", NULL, NULL);
 	ON::Input input(window);
 	if (window == NULL)
@@ -51,6 +71,7 @@ int main(int argc, char* argv[]) {
 	auto app = ON::CreateApplication();
 
 	app->OnRun();
+	ON::RunLayers();
 
 
 	IMGUI_CHECKVERSION();
@@ -69,6 +90,7 @@ int main(int argc, char* argv[]) {
 	while (!glfwWindowShouldClose(window))
 	{
 		app->OnUpdate(input);
+		ON::UpdateLayers(input);
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -78,6 +100,7 @@ int main(int argc, char* argv[]) {
 		ImGui::NewFrame();
 
 		app->OnRender();
+		ON::RenderLayers();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -92,5 +115,5 @@ int main(int argc, char* argv[]) {
 	ImGui::DestroyContext();
 
 	glfwTerminate();
-	delete app;
+	//delete app;
 }
