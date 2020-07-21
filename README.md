@@ -1,4 +1,5 @@
 # Ongine
+An open-source game engine built in C/C++.
 
 ## Dependencies
 * entt (used for ECS)
