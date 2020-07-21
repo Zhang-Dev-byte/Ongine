@@ -33,4 +33,16 @@ namespace ON {
 		uint32_t size;
 		unsigned int u_RendererID;
 	};
+
+	class ON_API OpenGLFramebuffer : Framebuffer{
+	public:
+		virtual void Create(FramebufferSpecification spec) override;
+		virtual void Bind() override;
+		virtual void Unbind() override;
+		unsigned int GetTCB();
+	public:
+		unsigned int u_RendererID;
+		unsigned int RBO;
+		unsigned int TCB;
+	};
 }

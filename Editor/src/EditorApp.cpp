@@ -8,8 +8,10 @@ public:
 	ON::Scene s;
 	ON::Entity e = ON::Entity({"Entity"}, s.GetRegistry());
 	ON::Entity c = ON::Entity({"Camera"}, s.GetRegistry());
+	ON::OpenGLFramebuffer FBO;
 
 	virtual void OnRun() override {
+		FBO.Create({ 1280, 720 });
 		e.AddComponent<ON::Sprite>(sprite, s.GetRegistry());
 		c.AddComponent<ON::Camera>(camera, s.GetRegistry());
 		c.RemoveComponent<ON::Transform>(s.GetRegistry());
@@ -20,6 +22,11 @@ public:
 		
 	}
 	virtual void OnRender() override {
+		FBO.Bind();
+		glClear(GL_COLOR_BUFFER_BIT);
+		s.Render();
+		FBO.Unbind();
+
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
 		bool opt_fullscreen = opt_fullscreen_persistant;
@@ -73,12 +80,17 @@ public:
 
 			ImGui::EndMenuBar();
 		}
+		ImGui::Begin("Viewport");
+		ImGui::Image((void*)FBO.GetTCB(), ImVec2(1280 / 1.5f, 720 / 1.5f));
+		ImGui::End();
+
+		ImGui::Begin("Control");
+		ImGui::DragFloat2("Position", glm::value_ptr(e.GetComponent<ON::Transform>(s.GetRegistry()).GetPosition()), 0.01f);
+		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::PopStyleVar();
 		ImGui::End();
-
-		s.Render();
 	}
 };
 

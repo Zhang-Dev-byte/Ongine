@@ -44,4 +44,15 @@ namespace ON {
 		uint32_t size;
 		unsigned int u_RendererID;
 	};
+
+	struct ON_API FramebufferSpecification {
+		int width;
+		int height;
+	};
+	class ON_API Framebuffer {
+	public:
+		virtual void Create(FramebufferSpecification spec) = 0;
+		virtual void Bind() = 0;
+		virtual void Unbind() = 0;
+	};
 }
