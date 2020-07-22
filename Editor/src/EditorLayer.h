@@ -88,14 +88,14 @@ public:
 	ON::Entity c = ON::Entity({ "Camera" }, s.GetRegistry());
 	ON::OpenGLFramebuffer FBO;
 	entt::entity sentity = s.GetRegistry().create();
-	char* name = new char(2048);
-	char* path = new char(2048);
+	char name[40] = { 0 };
+	char path[40] = { 0 };
 	virtual void OnRun() override {
 		c.AddComponent<ON::Camera>(camera, s.GetRegistry());
 		c.RemoveComponent<ON::Transform>(s.GetRegistry());
 
 		s.SetCamera(&c);
-		FBO.Create({ 1280, 720 * 2 });
+		FBO.Create({ 1280, (int)(720 * 1.6) });
 	}
 	virtual void OnUpdate(ON::Input& input) override {
 	}
@@ -103,6 +103,7 @@ public:
 		FBO.Bind();
 
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_MULTISAMPLE);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -110,14 +111,13 @@ public:
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_FRAMEBUFFER);
 
-		glClearColor(1, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		s.Render();
 		FBO.Unbind();
 
 		Dockspace::Begin();
 		ImGui::Begin("Explorer");
-		ImGui::InputText("Name", name, 2048);
+		ImGui::InputText("Name", name, IM_ARRAYSIZE(name));
 		if (ImGui::Button("New Entity", ImVec2(100, 20))) {
 			ON::Entity ent = ON::Entity({ name }, s.GetRegistry());
 		}
@@ -175,7 +175,7 @@ public:
 			}
 			if (ImGui::TreeNode("Components")) {
 				if (ImGui::TreeNode("Sprite")) {
-					ImGui::InputText("Path", path, 2048);
+					ImGui::InputText("Path", path, IM_ARRAYSIZE(path));
 					if (ImGui::Button("Add", ImVec2(100, 20))) {
 						s.GetRegistry().emplace_or_replace<ON::Sprite>(sentity, ON::Sprite(path));
 					}
