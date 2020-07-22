@@ -1,5 +1,23 @@
 #pragma once
 #include <Ongine.h>
+namespace FileUtil {
+	std::string OpenFilename(char* filter = "All Files (*.*)\0*.*\0", HWND owner = NULL) {
+		OPENFILENAME ofn;
+		char fileName[MAX_PATH] = "";
+		ZeroMemory(&ofn, sizeof(ofn));
+		ofn.lStructSize = sizeof(OPENFILENAME);
+		ofn.hwndOwner = owner;
+		ofn.lpstrFilter = filter;
+		ofn.lpstrFile = fileName;
+		ofn.nMaxFile = MAX_PATH;
+		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+		ofn.lpstrDefExt = "";
+		std::string fileNameStr;
+		if (GetOpenFileName(&ofn))
+			fileNameStr = fileName;
+		return fileNameStr;
+	}
+}
 namespace Dockspace {
 	void Begin() {
 		static bool dockspaceOpen = true;
@@ -64,10 +82,110 @@ namespace Dockspace {
 }
 class EditorLayer : public ON::Layer {
 public:
+	ON::Camera camera = ON::Camera(-1.6f, 1.6f, -0.9f, 0.9f);
+	ON::Sprite sprite = ON::Sprite("res/image.png");
+	ON::Scene s;
+	ON::Entity c = ON::Entity({ "Camera" }, s.GetRegistry());
+	ON::OpenGLFramebuffer FBO;
+	entt::entity sentity = s.GetRegistry().create();
+	char* name = new char(2048);
+	char* path = new char(2048);
 	virtual void OnRun() override {
+		c.AddComponent<ON::Camera>(camera, s.GetRegistry());
+		c.RemoveComponent<ON::Transform>(s.GetRegistry());
+
+		s.SetCamera(&c);
+		FBO.Create({ 1280, 720 * 2 });
 	}
 	virtual void OnUpdate(ON::Input& input) override {
 	}
 	virtual void OnRender() override {
+		FBO.Bind();
+
+		glEnable(GL_TEXTURE_2D);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_FRAMEBUFFER);
+
+		glClearColor(1, 0, 0, 1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		s.Render();
+		FBO.Unbind();
+
+		Dockspace::Begin();
+		ImGui::Begin("Explorer");
+		ImGui::InputText("Name", name, 2048);
+		if (ImGui::Button("New Entity", ImVec2(100, 20))) {
+			ON::Entity ent = ON::Entity({ name }, s.GetRegistry());
+		}
+		ImGui::End();
+
+		ImGui::Begin("Viewport");
+		ImGui::Image((void*)FBO.GetTCB(), ImVec2(1280 / 1.5, 720 / 1.5), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::End();
+
+		ImGui::Begin("Control");
+		auto view = s.GetRegistry().view<ON::EntityInfo>();
+		for (auto e : view) {
+			if (ImGui::Button(s.GetRegistry().get<ON::EntityInfo>(e).name.c_str(), ImVec2(100, 20))) {
+				sentity = e;
+			}
+		}
+		ImGui::End();
+
+		ImGui::Begin("Console");
+		ImGui::End();
+
+		ImGui::Begin("Properties");
+		if (s.GetRegistry().has<ON::EntityInfo>(sentity)) {
+			ImGui::Text(s.GetRegistry().get<ON::EntityInfo>(sentity).name.c_str());
+			if (s.GetRegistry().has<ON::Transform>(sentity)) {
+				if (ImGui::TreeNode("Transform")) {
+					// Entity
+					ImGui::DragFloat2("Position", glm::value_ptr(s.GetRegistry().get<ON::Transform>(sentity).GetPosition()), 0.01f);
+					ImGui::DragFloat2("Scale", glm::value_ptr(s.GetRegistry().get<ON::Transform>(sentity).GetScale()));
+
+					//Rotation Code Sorry this is kindof messy
+					float rot = (s.GetRegistry().get<ON::Transform>(sentity).GetRotation());
+					ImGui::DragFloat("Rotation", &rot);
+					s.GetRegistry().get<ON::Transform>(sentity).SetRotation(rot);
+
+					ImGui::TreePop();
+				}
+			}
+			else if (s.GetRegistry().has<ON::Camera>(sentity)) {
+				if (ImGui::TreeNode("Camera")) {
+					// Camera
+					ImGui::DragFloat2("Position", glm::value_ptr(s.GetRegistry().get<ON::Camera>(sentity).GetPosition()), 0.01f);
+
+					//Rotation Code Sorry this is kindof messy
+					float rot = (s.GetRegistry().get<ON::Camera>(sentity).GetRotation());
+					ImGui::DragFloat("Rotation", &rot);
+					s.GetRegistry().get<ON::Camera>(sentity).SetRotation(rot);
+
+					ImGui::TreePop();
+				}
+			}
+			else {
+				// Invalid
+				ON_CORE_ERROR("Invalid Entity!");
+			}
+			if (ImGui::TreeNode("Components")) {
+				if (ImGui::TreeNode("Sprite")) {
+					ImGui::InputText("Path", path, 2048);
+					if (ImGui::Button("Add", ImVec2(100, 20))) {
+						s.GetRegistry().emplace_or_replace<ON::Sprite>(sentity, ON::Sprite(path));
+					}
+					ImGui::TreePop();
+				}
+				ImGui::TreePop();
+			}
+		}
+		ImGui::End();
+
+		Dockspace::End();
 	}
 };

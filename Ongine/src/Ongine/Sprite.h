@@ -17,6 +17,9 @@ namespace ON {
 	class ON_API Sprite {
 	public:
 		Sprite(const std::string& path);
+		inline unsigned int GetID() {
+			return texture.GetRendererID();
+		}
 		void Render(ON::Camera camera, ON::Transform transform);
 	private:
 		ON::OpenGLShader shader;

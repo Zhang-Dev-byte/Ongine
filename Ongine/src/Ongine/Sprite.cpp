@@ -25,15 +25,16 @@ ON::Sprite::Sprite(const std::string& path)
 	texture.Create({ path });
 	texture.Bind();
 
-	shader.Use();
-	shader.SetInt("diffuse", texture.GetRendererID());
+	/*shader.Use();
+	shader.SetInt("diffuse", texture.GetRendererID());*/
 }
 
 void ON::Sprite::Render(ON::Camera camera, ON::Transform transform)
 {
 	shader.Use();
 	shader.SetMatrix4f("model", transform.GetModelMatrix());
-	shader.SetMatrix4f("view", camera.GetViewMatrix());
-	shader.SetMatrix4f("projection", camera.GetProjectionMatrix());
+	shader.SetMatrix4f("vp", camera.GetViewProjection());
+	shader.SetInt("diffuse", texture.GetRendererID());
+
 	OpenGLRenderer::DrawIndexed({ (sizeof(indices) / sizeof(indices[0])), EBO, VAO, shader });
 }

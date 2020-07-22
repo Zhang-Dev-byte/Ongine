@@ -35,6 +35,8 @@ namespace ON {
 				glm::rotate(glm::mat4(1.0f), glm::radians(rotation), glm::vec3(0, 0, 1));
 
 			view = glm::inverse(transform);
+
+			viewprojection = projection * view;
 		}
 		
 		inline glm::mat4& GetViewMatrix() {
@@ -44,9 +46,14 @@ namespace ON {
 		inline glm::mat4& GetProjectionMatrix() {
 			return projection;
 		}
+		inline glm::mat4& GetViewProjection() {
+			RecalculateViewMatrix();
+			return viewprojection;
+		}
 	private:
 		glm::mat4 projection;
 		glm::mat4 view;
+		glm::mat4 viewprojection;
 
 		glm::vec2 position;
 		float rotation = 0.0f;

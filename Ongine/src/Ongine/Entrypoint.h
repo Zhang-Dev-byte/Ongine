@@ -37,7 +37,6 @@ namespace ON {
 }
 int main(int argc, char* argv[]) {
 	ON::Log::Init();
-	ON::OnLayersCreate();
 
 	if (!glfwInit()) {
 		ON_CORE_CRITICAL("Failed to initalize GLFW");
@@ -66,7 +65,7 @@ int main(int argc, char* argv[]) {
 		ON_CORE_CRITICAL("Failed to initalize Glad");
 		return -1;
 	}
-
+	ON::OnLayersCreate();
 
 	auto app = ON::CreateApplication();
 
@@ -116,5 +115,5 @@ int main(int argc, char* argv[]) {
 	ImGui::DestroyContext();
 
 	glfwTerminate();
-	//delete app;
+	delete app;
 }

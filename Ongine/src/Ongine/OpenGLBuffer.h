@@ -44,5 +44,7 @@ namespace ON {
 		unsigned int u_RendererID;
 		unsigned int RBO;
 		unsigned int TCB;
+		int width;
+		int height;
 	};
 }

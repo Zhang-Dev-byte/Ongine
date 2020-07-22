@@ -68,36 +68,39 @@ unsigned int ON::OpenGLIndexBuffer::GetRenderID()
 
 void ON::OpenGLFramebuffer::Create(FramebufferSpecification spec)
 {
-	glGenFramebuffers(1, &u_RendererID);
-	glBindFramebuffer(GL_FRAMEBUFFER, u_RendererID);
+	width = spec.width;
+	height = spec.height;
+	glCall( glGenFramebuffers(1, &u_RendererID) );
+	glCall( glBindFramebuffer(GL_FRAMEBUFFER, u_RendererID) );
 
-	glGenTextures(1, &TCB);
-	glBindTexture(GL_TEXTURE_2D, TCB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, spec.width, spec.height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TCB, 0);
+	glCall( glGenTextures(1, &TCB) );
+	glCall( glBindTexture(GL_TEXTURE_2D, TCB) );
+	glCall( glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, spec.width, spec.height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL) );
+	glCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
+	glCall( glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR) );
+	glCall( glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TCB, 0) );
 
-	glGenRenderbuffers(1, &RBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, spec.width, spec.height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+	glCall( glGenRenderbuffers(1, &RBO) );
+	glCall( glBindRenderbuffer(GL_RENDERBUFFER, RBO) );
+	glCall( glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, spec.width, spec.height) );
+	glCall( glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO) );
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 		ON_CORE_ERROR("Framebuffer is not complete!");
 	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glCall( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 }
 
 void ON::OpenGLFramebuffer::Bind()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, u_RendererID);
+	glCall( glBindFramebuffer(GL_FRAMEBUFFER, u_RendererID) );
+	glCall( glViewport(0, 0, width, height) );
 }
 
 void ON::OpenGLFramebuffer::Unbind()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glCall( glBindFramebuffer(GL_FRAMEBUFFER, 0) );
 }
 
 unsigned int ON::OpenGLFramebuffer::GetTCB()
